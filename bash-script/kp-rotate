@@ -1,0 +1,47 @@
+#!/bin/bash
+
+function x11-rotate() {
+    case "$1" in
+        0|"normal"|"none")
+            xrandr -o normal
+            ;;
+        1|"inverted")
+            xrandr -o inverted
+            ;;
+        2|"left")
+            xrandr -o left
+            ;;
+        3|"right")
+            xrandr -o right
+            ;;
+        *)
+            xrandr -o normal
+            ;;
+    esac
+}
+
+function kde-wayland-rotate() {
+    case "$1" in
+        0|"normal"|"none")
+            kscreen-doctor output.1.rotation.none
+            ;;
+        1|"inverted")
+            kscreen-doctor output.1.rotation.inverted
+            ;;
+        2|"left")
+            kscreen-doctor output.1.rotation.left
+            ;;
+        3|"right")
+            kscreen-doctor output.1.rotation.right
+            ;;
+        *)
+            kscreen-doctor output.1.rotation.none
+            ;;
+    esac
+}
+
+if [[ "$XDG_SESSION_TYPE" == "x11" ]];then
+    x11-rotate "$1"
+elif [[ "$XDG_SESSION_DESKTOP" == "KDE" ]];then
+    kde-wayland-rotate "$1"
+fi
